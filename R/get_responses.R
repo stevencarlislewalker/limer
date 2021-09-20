@@ -7,6 +7,7 @@
 #' @param sCompletionStatus \dots
 #' @param sHeadingType \dots
 #' @param sResponseType \dots
+#' @param args_read_csv \dots
 #' @param \dots Further arguments to \code{\link{call_limer}}.
 #' @export
 #' @examples \dontrun{
@@ -15,7 +16,10 @@
 
 get_responses <- function(iSurveyID, sDocumentType = "csv", sLanguageCode = NULL,
                           sCompletionStatus = "complete", sHeadingType = "code",
-                          sResponseType = "long", ...) {
+                          sResponseType = "long",
+                          args_read_csv = list(stringsAsFactors = FALSE,
+                                               sep = ";"),
+                          ...) {
   # Put all the function's arguments in a list to then be passed to call_limer()
   params <- as.list(environment())
   dots <- list(...)
@@ -23,5 +27,5 @@ get_responses <- function(iSurveyID, sDocumentType = "csv", sLanguageCode = NULL
   # print(params) # uncomment to debug the params
 
   results <- call_limer(method = "export_responses", params = params)
-  return(base64_to_df(unlist(results)))
+  return(base64_to_df(unlist(results), args_read_csv = args_read_csv))
 }
